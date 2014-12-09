@@ -1,3 +1,5 @@
+import java.io.File;
+
 import org.apache.http.HttpStatus;
 
 import edu.uci.ics.crawler4j.crawler.CrawlConfig;
@@ -10,9 +12,18 @@ import edu.uci.ics.crawler4j.robotstxt.RobotstxtServer;
 import edu.uci.ics.crawler4j.url.WebURL;
 
 public class Controller2 {
+	
+	public static final String filename = "c:/data/ipadprice.csv";
+	
+	
 	public static void main(String[] args) throws Exception {
 		String crawlStorageFolder = "C:\\data\\crawl\\root";
 		int numberOfCrawlers = 1;
+		
+		File file = new File(filename);
+		if(file.exists()){
+			file.delete();
+		}
 
 		CrawlConfig config = new CrawlConfig();
 		config.setCrawlStorageFolder(crawlStorageFolder);		
@@ -37,6 +48,8 @@ public class Controller2 {
 
 		CrawlController controller = new CrawlController(config, pageFetcher,
 				robotstxtServer);
+		
+		
 
 		/*
 		 * For each crawl, you need to add some seed urls. These are the first
@@ -44,8 +57,6 @@ public class Controller2 {
 		 * which are found in these pages
 		 */
 		controller.addSeed("https://www.ptt.cc/bbs/MacShop/index.html");
-//		controller.addSeed("https://www.ptt.cc/bbs/MacShop/index3091.html");
-//		controller.addSeed("https://www.ptt.cc/bbs/MacShop/index3092.html");
 //		controller.addSeed("https://tw.news.yahoo.com/index.html");
 //		controller.addSeed("http://www.ipeen.com.tw/");
 
@@ -54,6 +65,9 @@ public class Controller2 {
 		 * will reach the line after this only when crawling is finished.
 		 */
 		controller.start(MyCrawler2.class, numberOfCrawlers);
+		
+//    	if(MyCrawler2.count>5)    		
+//    		controller.shutdown();
 	}
 	/*
 	 private Page download(String url){
