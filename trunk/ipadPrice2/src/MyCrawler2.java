@@ -131,25 +131,56 @@ public class MyCrawler2 extends WebCrawler {
 //				e.printStackTrace();
 //			}
         	
-        	 
+        	//-- igore several first words
+//        	context = context.substring(context.indexOf("[物品型號]")+6);
+        	
+        	//-- cut string after "-- ※"
+        	context = context.substring(context.indexOf("[物品型號]"),context.indexOf("-- ※"));
         	
         	String str = author+","
         			+board+","
         			+title+","
         			+thedate+","
         			+context+"\n";
+//        	String str = context+"\n";
         	
 //        	String serialnum=null,spec=null,warranty=null,receipt=null,accessories=null,image=null;
 //        	String auctionv,connection=null,tradeplace=null,trademethod=null,price=null,others=null;
-        	int serialnum,spec,warranty,receipt,accessories,image,auction,connection,tradeplace,trademethod,price,others;
-        	serialnum 	= context.indexOf("[物品型號]");
-        	spec 		= context.indexOf("[物品規格]");
-        	warranty 	= context.indexOf("[保固日期]");
-        	receipt 	= context.indexOf("[原始發票]");
-        	accessories = context.indexOf("[隨機配件]");
-        	image 		= context.indexOf("[照片連結]");
+//        	int serialnum,spec,warranty,receipt,accessories,image,auction,connection,tradeplace,trademethod,price,others;
+//        	serialnum 	= context.indexOf("[物品型號]");
+//        	spec 		= context.indexOf("[物品規格]");
+//        	warranty 	= context.indexOf("[保固日期]");
+//        	receipt 	= context.indexOf("[原始發票]");
+//        	accessories = context.indexOf("[隨機配件]");
+//        	image 		= context.indexOf("[照片連結]");
+        	//-- default word
+        	str = str.replace("[物品型號]：", " ").replace("[物品規格]：", ",").replace("[保固日期]：", ",").replace("[原始發票]：", ",");
+        	str = str.replace("[隨機配件]：", ",").replace("[照片連結]：", ",").replace("[拍賣連結]：", ",").replace("[連絡方式]：", ",");
+        	str = str.replace("[交易地點]：", ",").replace("[交易方式]：", ",").replace("[交易價格]：", ",").replace("[其他備註]：", ",");
         	
-        	System.out.println(context.substring(serialnum, spec));
+        	//-- small :
+        	str = str.replace("[物品型號]:", " ").replace("[物品規格]:", ",").replace("[保固日期]:", ",").replace("[原始發票]:", ",");
+        	str = str.replace("[隨機配件]:", ",").replace("[照片連結]:", ",").replace("[拍賣連結]:", ",").replace("[連絡方式]:", ",");
+        	str = str.replace("[交易地點]:", ",").replace("[交易方式]:", ",").replace("[交易價格]:", ",").replace("[其他備註]:", ",");
+        	
+        	//-- custom word
+        	str = str.replace("[希望價格]：", ",").replace("[備註事項]：", ",").replace("[保固狀態]：", ",").replace("[我想要買]：", ",");
+        	
+        	
+//        	System.out.println("....."+serialnum);
+//        	System.out.println("....."+spec);
+//        	System.out.println("....."+warranty);
+        	
+//        	String[] stray = new String[20];        	
+//        	stray[0] = context.substring(serialnum, spec);
+//        	stray[1] = context.substring(spec,warranty);
+//        	System.out.println("----------"+stray[0]);
+//        	System.out.println("----------"+stray[1]);
+        	
+//        	str = str.replace("[物品規格]：", " ,");
+        	
+        	
+//        	System.out.println(context.substring(serialnum, spec));
         	
 	        
 //        	new String(big5str.getBytes( "BIG5 "), "UTF-8 "); 
@@ -194,16 +225,21 @@ public class MyCrawler2 extends WebCrawler {
 		try{
 			if (!file.exists()) {
 				file.createNewFile();
+				
+				//-- write header
+				String header = "作者,哪版, 標題, 日期, [物品型號],[物品規格],[保固日期],[原始發票],[隨機配件],[照片連結],[拍賣連結],[連絡方式],[交易地點],[交易方式],[交易價格],[其他備註]\n";
+				BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file, true), "big5"));
+				writer.append(header);
+				writer.close();
 			}
 			//use FileWriter to write file
 //			FileWriter fw = new FileWriter(file.getAbsoluteFile(), true);
 //			BufferedWriter bw = new BufferedWriter(fw);
 //			bw.write(str);
 //			bw.close();
-			
 
 			// 2014.12.10 Samuel, 設定為BIG5格式
-			BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), "big5"));
+			BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file, true), "big5"));
 			writer.append(str);
 			writer.close();
 			
