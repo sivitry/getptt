@@ -1,6 +1,9 @@
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
+import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -99,18 +102,18 @@ public class MyCrawler2 extends WebCrawler {
         	
             // 2014.12.09.Samuel
         	// Need add to parse the following string from context: 
-//[ª««~«¬¸¹]
-//[ª««~³W®æ] 
-//[«O©T¤é´Á]
-//[­ì©lµo²¼]¡G±o¼úÂ§ª« ¨S¦³µo²¼
-//[ÀH¾÷°t¥ó]¡G­ì¼t²°¸Ë°t¥ó
-//[·Ó¤ù³sµ²]¡GµL »İ­nªº¸Ü¥i¨p°T´£¨Ñ
-//[©ç½æ³sµ²]¡G
-//[³sµ¸¤è¦¡]¡G¯¸¤º«H
-//[¥æ©ö¦aÂI]¡GÂù¥_ ®ç¶é
-//[¥æ©ö¤è¦¡]¡G­±¥æ
-//[¥æ©ö»ù®æ]¡G6800
-//[¨ä¥L³Æµù]¡G¥ş·s±o¼úªº¼ú«~¡A©|¥¼©î«Ê¡A¦ı¦Û¤v¤w¸g¦³¤F¡A©Ò¥H­°»ù¥X°â´M¨D¦³½t¤HÅo
+//[ï¿½ï¿½ï¿½~ï¿½ï¿½ï¿½ï¿½]
+//[ï¿½ï¿½ï¿½~ï¿½Wï¿½ï¿½] 
+//[ï¿½Oï¿½Tï¿½ï¿½ï¿½]
+//[ï¿½ï¿½lï¿½oï¿½ï¿½]ï¿½Gï¿½oï¿½ï¿½Â§ï¿½ï¿½ ï¿½Sï¿½ï¿½ï¿½oï¿½ï¿½
+//[ï¿½Hï¿½ï¿½ï¿½tï¿½ï¿½]ï¿½Gï¿½ï¿½tï¿½ï¿½ï¿½Ë°tï¿½ï¿½
+//[ï¿½Ó¤ï¿½sï¿½ï¿½]ï¿½Gï¿½L ï¿½İ­nï¿½ï¿½ï¿½Ü¥iï¿½pï¿½Tï¿½ï¿½ï¿½ï¿½
+//[ï¿½ï¿½ï¿½sï¿½ï¿½]ï¿½G
+//[ï¿½sï¿½ï¿½ï¿½è¦¡]ï¿½Gï¿½ï¿½ï¿½ï¿½ï¿½H
+//[ï¿½ï¿½ï¿½ï¿½aï¿½I]ï¿½Gï¿½ï¿½_ ï¿½ï¿½ï¿½
+//[ï¿½ï¿½ï¿½ï¿½è¦¡]ï¿½Gï¿½ï¿½ï¿½ï¿½
+//[ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½]ï¿½G6800
+//[ï¿½ï¿½Lï¿½Æµï¿½]ï¿½Gï¿½ï¿½ï¿½sï¿½oï¿½ï¿½ï¿½~ï¿½Aï¿½|ï¿½ï¿½ï¿½ï¿½Ê¡Aï¿½ï¿½Û¤vï¿½wï¿½gï¿½ï¿½ï¿½Fï¿½Aï¿½Ò¥Hï¿½ï¿½ï¿½ï¿½Xï¿½ï¿½Mï¿½Dï¿½ï¿½ï¿½tï¿½Hï¿½o
 
         	
 //        	int index = 0;
@@ -120,13 +123,37 @@ public class MyCrawler2 extends WebCrawler {
         	thedate = thedate.replace(',','_');
         	context = context.replace(',','_');
         	
+//        	byte[] big5 = null;
+        	//-- big5 to utf8
+//        	try {
+//        		context = context.getBytes("Big5");        		
+//			} catch (UnsupportedEncodingException e) {
+//				e.printStackTrace();
+//			}
         	
+        	 
         	
         	String str = author+","
         			+board+","
         			+title+","
         			+thedate+","
         			+context+"\n";
+        	
+//        	String serialnum=null,spec=null,warranty=null,receipt=null,accessories=null,image=null;
+//        	String auctionv,connection=null,tradeplace=null,trademethod=null,price=null,others=null;
+        	int serialnum,spec,warranty,receipt,accessories,image,auction,connection,tradeplace,trademethod,price,others;
+        	serialnum 	= context.indexOf("[ç‰©å“å‹è™Ÿ]");
+        	spec 		= context.indexOf("[ç‰©å“è¦æ ¼]");
+        	warranty 	= context.indexOf("[ä¿å›ºæ—¥æœŸ]");
+        	receipt 	= context.indexOf("[åŸå§‹ç™¼ç¥¨]");
+        	accessories = context.indexOf("[éš¨æ©Ÿé…ä»¶]");
+        	image 		= context.indexOf("[ç…§ç‰‡é€£çµ]");
+        	
+        	System.out.println(context.substring(serialnum, spec));
+        	
+	        
+//        	new String(big5str.getBytes( "BIG5 "), "UTF-8 "); 
+//	        new String(utf8str.getBytes( "UTF-8 "), "BIG5 ");
         	
 /*
         	System.out.println("author, board, title, date, context="
@@ -169,11 +196,17 @@ public class MyCrawler2 extends WebCrawler {
 				file.createNewFile();
 			}
 			//use FileWriter to write file
-			FileWriter fw = new FileWriter(file.getAbsoluteFile(), true);
-			BufferedWriter bw = new BufferedWriter(fw);
+//			FileWriter fw = new FileWriter(file.getAbsoluteFile(), true);
+//			BufferedWriter bw = new BufferedWriter(fw);
+//			bw.write(str);
+//			bw.close();
 			
-			bw.write(str);
-			bw.close();
+
+			// 2014.12.10 Samuel, è¨­å®šç‚ºBIG5æ ¼å¼
+			BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), "big5"));
+			writer.append(str);
+			writer.close();
+			
 		}
 		catch(Exception e){
 			e.printStackTrace();

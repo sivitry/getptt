@@ -1,0 +1,28 @@
+serialnum, [物品型號]：MH172TA/A
+
+spec, [物品規格]：iPad Air2 64GB 金色 Wifi + Cellular (LTE)
+            支援全頻4G (Band28 700Mhz)
+
+warranty, [保固日期]：開通後一年
+receipt, [原始發票]：有
+
+accessories, [隨機配件]：原廠配件
+
+image, [照片連結]：https://images.plurk.com/6CBDuT2rIwwhKY7Me0knua.jpg
+
+auction, [拍賣連結]：無
+
+connection, [連絡方式]：站內信
+
+tradeplace, [交易地點]：台中市 沙鹿區/東海榮總
+            今晚(10號)台中市區可面交
+
+trademethod, [交易方式]：面交 or 宅急便
+
+price, [交易價格]: NT$ 21,900 (官網售22,900，現折一千)
+
+others, [其他備註]：剛拿到手的
+
+
+
+serialnum,spec,warranty,receipt,accessories,image,auction,connection,tradeplace,trademethod,price,others
