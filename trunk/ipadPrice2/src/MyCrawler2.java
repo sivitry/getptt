@@ -23,7 +23,7 @@ import edu.uci.ics.crawler4j.url.WebURL;
 public class MyCrawler2 extends WebCrawler {
 
 	public static int count=0; 
-	final int maxcount = 200;
+	final int maxcount = 6553600;
 	
 	
     private final static Pattern FILTERS = Pattern.compile(".*(\\.(css|js|bmp|gif|jpe?g" 
@@ -77,6 +77,7 @@ public class MyCrawler2 extends WebCrawler {
     	//--control max read number
     	count++;
     	if(count>maxcount){
+    		System.out.println("reach maxcount and system exit, count="+count);
     		System.exit(0);
     	}
     }
@@ -135,66 +136,101 @@ public class MyCrawler2 extends WebCrawler {
 //        	context = context.substring(context.indexOf("[物品型號]")+6);
         	
         	//-- cut string after "-- ※"
-        	context = context.substring(context.indexOf("[物品型號]"),context.indexOf("-- ※"));
+        	int start = context.indexOf("[物品型號]");
+        	if(start!=-1){
+        		context = context.substring(start,context.indexOf("-- ※"));
+        	}
         	
-        	String str = author+","
+        	//-- find index
+//        	String[] stray = new String[20];
+//        	for(String s : stray){
+//        		s = " ";
+//        	}
+        	
+        	//-- remove ':' and '：'
+        	context = context.replace(":", " ");
+        	context = context.replace("：", " ");
+        	
+        	String[] text = new String[20];
+        	int[] index;
+        	index = new int[20];
+        	for(int i=0; i<index.length; i++){
+        		index[i] = -1;
+        		text[i]="@";
+        	}
+        	index[0] = context.indexOf("[物品型號]");
+        	index[1] = context.indexOf("[物品規格]");
+        	index[2] = context.indexOf("[保固日期]");
+        	index[3] = context.indexOf("[原始發票]");
+        	index[4] = context.indexOf("[隨機配件]");
+        	index[5] = context.indexOf("[照片連結]");
+        	index[6] = context.indexOf("[拍賣連結]");
+        	index[7] = context.indexOf("[連絡方式]");
+        	index[8] = context.indexOf("[交易地點]");
+        	index[9] = context.indexOf("[交易方式]");
+        	index[10] = context.indexOf("[交易價格]");
+        	index[11] = context.indexOf("[其他備註]");
+
+        	int offset = 6;
+        	for(int i=0; i<12; i++){
+        		if(i==11){
+        			text[i] = context.substring(index[i]+offset, context.length());
+        			continue;
+        		}else if(index[i]!=-1 && index[i+1]!=-1){
+        			text[i] = context.substring(index[i]+offset, index[i+1]);
+        		}else if(index[i]==-1){		//-- self prefix not found
+        			text[i]="X";
+        			continue;
+        		}else if(index[i+1]==-1){	//-- find next non -1 index
+        			for(int j=i+1; j<12; j++){
+        				if(index[j]!=-1){
+        					text[i] = context.substring(index[i]+offset, index[j]);
+        					break;
+        				}
+        				if(j==11){
+        					text[i] = context.substring(index[i]+offset, context.length());
+            			}
+        			}
+        		}
+        	}
+        	
+        	for(int i=0; i<12; i++){
+        		System.out.println(i+"="+index[i]+" "+text[i]);
+        	}        	
+        	
+        	
+/*        	String str = author+","
         			+board+","
         			+title+","
         			+thedate+","
-        			+context+"\n";
-//        	String str = context+"\n";
+        			+context+"\n";*/
+
+        	String str = author+",";
+        	str = str.concat(board+",");
+        	str = str.concat(title+",");
+        	str = str.concat(thedate+",");
+        	for(int i=0; i<12; i++){
+        		if(i==11){
+        			str = str.concat(text[i]+"\n");
+        			break;
+        		}
+        		str = str.concat(text[i]+",");	
+        	}
         	
-//        	String serialnum=null,spec=null,warranty=null,receipt=null,accessories=null,image=null;
-//        	String auctionv,connection=null,tradeplace=null,trademethod=null,price=null,others=null;
-//        	int serialnum,spec,warranty,receipt,accessories,image,auction,connection,tradeplace,trademethod,price,others;
-//        	serialnum 	= context.indexOf("[物品型號]");
-//        	spec 		= context.indexOf("[物品規格]");
-//        	warranty 	= context.indexOf("[保固日期]");
-//        	receipt 	= context.indexOf("[原始發票]");
-//        	accessories = context.indexOf("[隨機配件]");
-//        	image 		= context.indexOf("[照片連結]");
         	//-- default word
-        	str = str.replace("[物品型號]：", " ").replace("[物品規格]：", ",").replace("[保固日期]：", ",").replace("[原始發票]：", ",");
-        	str = str.replace("[隨機配件]：", ",").replace("[照片連結]：", ",").replace("[拍賣連結]：", ",").replace("[連絡方式]：", ",");
-        	str = str.replace("[交易地點]：", ",").replace("[交易方式]：", ",").replace("[交易價格]：", ",").replace("[其他備註]：", ",");
+//        	str = str.replace("[物品型號]：", " ").replace("[物品規格]：", ",").replace("[保固日期]：", ",").replace("[原始發票]：", ",");
+//        	str = str.replace("[隨機配件]：", ",").replace("[照片連結]：", ",").replace("[拍賣連結]：", ",").replace("[連絡方式]：", ",");
+//        	str = str.replace("[交易地點]：", ",").replace("[交易方式]：", ",").replace("[交易價格]：", ",").replace("[其他備註]：", ",");
         	
         	//-- small :
-        	str = str.replace("[物品型號]:", " ").replace("[物品規格]:", ",").replace("[保固日期]:", ",").replace("[原始發票]:", ",");
-        	str = str.replace("[隨機配件]:", ",").replace("[照片連結]:", ",").replace("[拍賣連結]:", ",").replace("[連絡方式]:", ",");
-        	str = str.replace("[交易地點]:", ",").replace("[交易方式]:", ",").replace("[交易價格]:", ",").replace("[其他備註]:", ",");
+//        	str = str.replace("[物品型號]:", " ").replace("[物品規格]:", ",").replace("[保固日期]:", ",").replace("[原始發票]:", ",");
+//        	str = str.replace("[隨機配件]:", ",").replace("[照片連結]:", ",").replace("[拍賣連結]:", ",").replace("[連絡方式]:", ",");
+//        	str = str.replace("[交易地點]:", ",").replace("[交易方式]:", ",").replace("[交易價格]:", ",").replace("[其他備註]:", ",");
         	
         	//-- custom word
-        	str = str.replace("[希望價格]：", ",").replace("[備註事項]：", ",").replace("[保固狀態]：", ",").replace("[我想要買]：", ",");
+//        	str = str.replace("[希望價格]：", ",").replace("[備註事項]：", ",").replace("[保固狀態]：", ",").replace("[我想要買]：", ",");
         	
-        	
-//        	System.out.println("....."+serialnum);
-//        	System.out.println("....."+spec);
-//        	System.out.println("....."+warranty);
-        	
-//        	String[] stray = new String[20];        	
-//        	stray[0] = context.substring(serialnum, spec);
-//        	stray[1] = context.substring(spec,warranty);
-//        	System.out.println("----------"+stray[0]);
-//        	System.out.println("----------"+stray[1]);
-        	
-//        	str = str.replace("[物品規格]：", " ,");
-        	
-        	
-//        	System.out.println(context.substring(serialnum, spec));
-        	
-	        
-//        	new String(big5str.getBytes( "BIG5 "), "UTF-8 "); 
-//	        new String(utf8str.getBytes( "UTF-8 "), "BIG5 ");
-        	
-/*
-        	System.out.println("author, board, title, date, context="
-        			+tagvalue.get(0).text()+","
-        			+tagvalue.get(1).text()+","
-        			+tagvalue.get(2).text()+","
-        			+tagvalue.get(3).text()+","
-        			+context);
-*/        			
-        	System.out.println("str=" + str);
+//        	System.out.println("str=" + str);
         	
         	//	new file name
         	File file = new File(Controller2.filename);
