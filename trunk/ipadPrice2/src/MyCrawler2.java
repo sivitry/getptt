@@ -135,10 +135,15 @@ public class MyCrawler2 extends WebCrawler {
         	//-- igore several first words
 //        	context = context.substring(context.indexOf("[物品型號]")+6);
         	
-        	//-- cut string after "-- ※"
+        	//-- cut string before "QQXX", cut string after "-- ※"
         	int start = context.indexOf("[物品型號]");
-        	if(start!=-1){
-        		context = context.substring(start,context.indexOf("-- ※"));
+        	int end = context.indexOf("-- ※");
+        	if(start!=-1 && end!=-1){
+        		context = context.substring(start,end);
+        	}else if(start!=-1){
+        		context = context.substring(start, context.length());
+        	}else{
+        		context = context.substring(0, end);
         	}
         	
         	//-- find index
