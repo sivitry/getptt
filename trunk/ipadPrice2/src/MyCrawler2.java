@@ -117,7 +117,7 @@ public class MyCrawler2 extends WebCrawler {
 //[��L�Ƶ�]�G���s�o���~�A�|����ʡA��ۤv�w�g���F�A�ҥH����X��M�D���t�H�o
 
         	
-//        	int index = 0;
+        	//-- replace ',' to '_'
         	author = author.replace(',','_');
         	board = board.replace(',','_');
         	title = title.replace(',','_');
@@ -202,6 +202,9 @@ public class MyCrawler2 extends WebCrawler {
         	for(int i=0; i<12; i++){
         		System.out.println(i+"="+index[i]+" "+text[i]);
         	}        	
+        	
+        	//-- price field string remove '_' char
+        	text[10].replace("_","");
         	
         	
 /*        	String str = author+","
