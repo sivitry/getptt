@@ -217,6 +217,7 @@ public class MyCrawler2 extends WebCrawler {
         	str = str.concat(board+",");
         	str = str.concat(title+",");
         	str = str.concat(thedate+",");
+        	str = str.concat(url+",");
         	for(int i=0; i<12; i++){
         		if(i==11){
         			str = str.concat(text[i]+"\n");
