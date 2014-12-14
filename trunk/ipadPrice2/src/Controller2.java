@@ -31,7 +31,7 @@ public class Controller2 {
 		
 		
 		config.setPolitenessDelay(1000);
-		config.setMaxDepthOfCrawling(5);
+		config.setMaxDepthOfCrawling(1000);
 //		config.setMaxPagesToFetch(100);
 //		config.setIncludeBinaryContentInCrawling(false);
 //		config.setResumableCrawling(false);
