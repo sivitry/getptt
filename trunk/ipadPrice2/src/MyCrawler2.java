@@ -272,7 +272,7 @@ public class MyCrawler2 extends WebCrawler {
 				file.createNewFile();
 				
 				//-- write header
-				String header = "作者,哪版, 標題, 日期, [物品型號],[物品規格],[保固日期],[原始發票],[隨機配件],[照片連結],[拍賣連結],[連絡方式],[交易地點],[交易方式],[交易價格],[其他備註]\n";
+				String header = "作者,哪版, 標題, 日期, url,[物品型號],[物品規格],[保固日期],[原始發票],[隨機配件],[照片連結],[拍賣連結],[連絡方式],[交易地點],[交易方式],[交易價格],[其他備註]\n";
 				BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file, true), "big5"));
 				writer.append(header);
 				writer.close();
