@@ -1,4 +1,6 @@
 import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 import org.apache.http.HttpStatus;
 
@@ -13,13 +15,18 @@ import edu.uci.ics.crawler4j.url.WebURL;
 
 public class Controller2 {
 	
-	public static final String filename = "c:/data/ipadprice.csv";
+	public static String filename = "c:/data/";
 	
 	
 	public static void main(String[] args) throws Exception {
 		String crawlStorageFolder = "C:\\data\\crawl\\root";
 		int numberOfCrawlers = 1;
 		
+		Calendar date = Calendar.getInstance();
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+		String datestr = sdf.format(date.getTime());
+		filename = filename+datestr+"_ipadprice.csv";
 		File file = new File(filename);
 		if(file.exists()){
 			file.delete();
